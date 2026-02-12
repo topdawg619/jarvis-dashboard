@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>JARVIS Dashboard</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0f;--card:#12121a;--card-hover:#1a1a2e;--accent:#00d4ff;--accent2:#0088aa;--text:#e0e0e0;--dim:#667;--border:#1e1e2e;--glow:0 0 20px rgba(0,212,255,.15)}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 50% 0%,rgba(0,212,255,.06) 0%,transparent 60%);pointer-events:none;z-index:0}
+.container{max-width:600px;margin:0 auto;padding:16px;position:relative;z-index:1}
+
+/* Header */
+.header{text-align:center;padding:24px 0 16px;position:relative}
+.header h1{font-size:2.2rem;font-weight:200;letter-spacing:12px;color:var(--accent);text-shadow:0 0 30px rgba(0,212,255,.4),0 0 60px rgba(0,212,255,.1);margin-bottom:4px}
+.header .tagline{font-size:.7rem;letter-spacing:6px;color:var(--dim);text-transform:uppercase}
+.header .datetime{font-size:.8rem;color:var(--accent2);margin-top:12px;font-family:'Courier New',monospace;letter-spacing:1px}
+.header::after{content:'';display:block;width:80%;max-width:300px;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);margin:20px auto 0;opacity:.4}
+.pulse-line{width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);animation:pulse-scan 3s ease-in-out infinite;opacity:.3;margin-bottom:8px}
+@keyframes pulse-scan{0%,100%{opacity:.1;transform:scaleX(.5)}50%{opacity:.4;transform:scaleX(1)}}
+
+/* Stats bar */
+.stats-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 8px;text-align:center}
+.stat .num{font-size:1.6rem;font-weight:700;color:var(--accent);text-shadow:0 0 10px rgba(0,212,255,.3)}
+.stat .label{font-size:.6rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-top:2px}
+
+/* Upcoming */
+.upcoming{background:linear-gradient(135deg,rgba(0,212,255,.08),rgba(0,212,255,.02));border:1px solid rgba(0,212,255,.15);border-radius:12px;padding:14px 16px;margin-bottom:20px}
+.upcoming h3{font-size:.65rem;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:10px}
+.event{display:flex;align-items:center;gap:10px;padding:6px 0}
+.event:not(:last-child){border-bottom:1px solid rgba(255,255,255,.04)}
+.event .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;box-shadow:0 0 6px var(--accent)}
+.event .info{flex:1}
+.event .title{font-size:.85rem;font-weight:500}
+.event .meta{font-size:.7rem;color:var(--dim)}
+.countdown{font-size:.65rem;color:var(--accent);font-family:'Courier New',monospace}
+
+/* Sections */
+.section{margin-bottom:16px}
+.section-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--card);border:1px solid var(--border);border-radius:12px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .2s}
+.section-header:active{background:var(--card-hover)}
+.section-header h2{font-size:.95rem;font-weight:600}
+.section-header .badge{background:rgba(0,212,255,.15);color:var(--accent);font-size:.65rem;padding:3px 8px;border-radius:20px;letter-spacing:1px}
+.section-header .chevron{color:var(--dim);transition:transform .3s;font-size:.8rem}
+.section.open .chevron{transform:rotate(90deg)}
+.section-body{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1)}
+.section.open .section-body{max-height:2000px}
+.cards{padding:8px 0;display:grid;grid-template-columns:1fr;gap:8px}
+
+/* Cards */
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;transition:all .25s;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--accent);opacity:0;transition:opacity .25s}
+.card:active{background:var(--card-hover)}
+.card:active::before{opacity:1}
+.card .name{font-size:.8rem;font-weight:600;color:var(--accent);margin-bottom:3px;display:flex;align-items:center;gap:6px}
+.card .name .icon{font-size:.9rem}
+.card .desc{font-size:.72rem;color:var(--dim);line-height:1.4}
+
+/* Footer */
+.footer{text-align:center;padding:24px 0;color:var(--dim);font-size:.6rem;letter-spacing:2px}
+.footer span{color:var(--accent)}
+
+@media(min-width:400px){.cards{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="pulse-line"></div>
+
+  <div class="header">
+    <h1>JARVIS</h1>
+    <div class="tagline">Personal AI Assistant System</div>
+    <div class="datetime" id="clock"></div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat"><div class="num">18</div><div class="label">Files</div></div>
+    <div class="stat"><div class="num">4</div><div class="label">Research</div></div>
+    <div class="stat"><div class="num">3</div><div class="label">Cron Jobs</div></div>
+  </div>
+
+  <div class="upcoming">
+    <h3>⚡ Upcoming</h3>
+    <div class="event">
+      <div class="dot"></div>
+      <div class="info">
+        <div class="title">SKO Salt Lake City</div>
+        <div class="meta">Mon Feb 16 – Thu Feb 19</div>
+      </div>
+      <div class="countdown" id="sko-countdown"></div>
+    </div>
+    <div class="event">
+      <div class="dot" style="background:#667;box-shadow:none"></div>
+      <div class="info">
+        <div class="title">Morning Briefings</div>
+        <div class="meta">Daily at 6:00 AM</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hot Wheels Diorama Toolkit -->
+  <div class="section open" id="sec-hw">
+    <div class="section-header" onclick="toggle('sec-hw')">
+      <h2>🏎️ Hot Wheels Diorama Toolkit</h2>
+      <span class="badge">8 files</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="section-body">
+      <div class="cards">
+        <div class="card"><div class="name"><span class="icon">📏</span> Scale Reference</div><div class="desc">1:64 scale conversion chart — divide real-world by 64</div></div>
+        <div class="card"><div class="name"><span class="icon">🖨️</span> Print Profiles</div><div class="desc">Printer assignment guide — which printer for which parts</div></div>
+        <div class="card"><div class="name"><span class="icon">🎨</span> Paint Guide</div><div class="desc">Painting & weathering techniques — primer is non-negotiable</div></div>
+        <div class="card"><div class="name"><span class="icon">🛒</span> Materials List</div><div class="desc">Complete shopping list — resin, PLA, paints, tools & supplies</div></div>
+        <div class="card"><div class="name"><span class="icon">💡</span> Diorama Ideas</div><div class="desc">18 scene concepts from easy to expert difficulty</div></div>
+        <div class="card"><div class="name"><span class="icon">💡</span> Lighting Guide</div><div class="desc">LED techniques for 1:64 scale — hide the LED, show the glow</div></div>
+        <div class="card"><div class="name"><span class="icon">🗂️</span> STL Resources</div><div class="desc">Where to find 1:64 & HO scale printable parts online</div></div>
+        <div class="card"><div class="name"><span class="icon">📖</span> README</div><div class="desc">Toolkit overview — reference system for your printer fleet</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SKO Prep Kit -->
+  <div class="section" id="sec-sko">
+    <div class="section-header" onclick="toggle('sec-sko')">
+      <h2>🎯 SKO Prep Kit</h2>
+      <span class="badge">4 files</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="section-body">
+      <div class="cards">
+        <div class="card"><div class="name"><span class="icon">🧠</span> AI Talking Points</div><div class="desc">Multi-agent AI as the biggest infra trend since cloud migration</div></div>
+        <div class="card"><div class="name"><span class="icon">🎬</span> Demo Script</div><div class="desc">Live Jarvis demo playbook — multi-agent system, not a chatbot</div></div>
+        <div class="card"><div class="name"><span class="icon">💬</span> Conversation Starters</div><div class="desc">Natural ways to steer any conversation toward multi-agent AI</div></div>
+        <div class="card"><div class="name"><span class="icon">📖</span> README</div><div class="desc">SKO overview — RapidScale Sales Kickoff, Feb 16, SLC</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3D Printer Guides -->
+  <div class="section" id="sec-3d">
+    <div class="section-header" onclick="toggle('sec-3d')">
+      <h2>🖨️ 3D Printer Guides</h2>
+      <span class="badge">3 files</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="section-body">
+      <div class="cards">
+        <div class="card"><div class="name"><span class="icon">🔮</span> Elegoo Saturn 4 16K</div><div class="desc">Resin printer — ultra-fine 16K detail for miniatures & diorama parts</div></div>
+        <div class="card"><div class="name"><span class="icon">🦾</span> Anycubic Kobra 3 Max</div><div class="desc">Large-format FDM — big builds and terrain pieces</div></div>
+        <div class="card"><div class="name"><span class="icon">📦</span> Anycubic Kobra S1</div><div class="desc">CoreXY enclosed FDM — $549 MSRP, frequently ~$349 on sale</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Research -->
+  <div class="section" id="sec-research">
+    <div class="section-header" onclick="toggle('sec-research')">
+      <h2>🔍 Research</h2>
+      <span class="badge">1 file</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="section-body">
+      <div class="cards">
+        <div class="card"><div class="name"><span class="icon">🌐</span> OSINT Trends 2026</div><div class="desc">Trends & tools briefing for solutions architects & security professionals</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">JARVIS v1.0 • Built with <span>♥</span> by OpenClaw</div>
+</div>
+
+<script>
+function toggle(id){document.getElementById(id).classList.toggle('open')}
+function updateClock(){
+  const now=new Date();
+  const opts={weekday:'short',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false};
+  document.getElementById('clock').textContent=now.toLocaleDateString('en-US',opts);
+}
+function updateCountdown(){
+  const sko=new Date('2026-02-16T08:00:00-07:00');
+  const now=new Date();
+  const diff=sko-now;
+  if(diff<=0){document.getElementById('sko-countdown').textContent='NOW';return}
+  const d=Math.floor(diff/864e5),h=Math.floor((diff%864e5)/36e5);
+  document.getElementById('sko-countdown').textContent=d+'d '+h+'h';
+}
+updateClock();updateCountdown();
+setInterval(updateClock,1000);setInterval(updateCountdown,60000);
+</script>
+</body>
+</html>
