@@ -31,13 +31,22 @@ section .body{padding:16px}
 .column header{border:none;padding:12px 14px}
 .column header h3{font-size:.9rem;margin-right:auto}
 .column header span{font-size:.65rem;color:var(--dim)}
-.column .cards{padding:10px 14px;display:flex;flex-direction:column;gap10px}
-.task{border:1px solid var(--border);border-radius:10px;padding:10px 12px;background:rgba(255,255,255,.02)}
+.column .cards{padding:10px 14px;display:flex;flex-direction:column;gap:10px}
+.task{border:1px solid var(--border);border-radius:10px;padding:10px 12px;background:rgba(255,255,255,.02);cursor:pointer;transition:transform .2s,background .2s}
+.task:hover{transform:translateY(-2px);background:rgba(255,255,255,.04)}
 .task h4{font-size:.85rem;margin-bottom:4px}
 .task p{font-size:.7rem;color:var(--dim)}
 .task .tag{display:inline-block;margin-top:6px;font-size:.6rem;padding:2px 8px;border-radius:999px;background:rgba(0,212,255,.15);color:var(--accent);letter-spacing:1px}
 .task .links{margin-top:6px;font-size:.65rem}
 .task .links a{color:var(--accent);text-decoration:none;margin-right:10px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:10}
+.modal.open{display:flex}
+.modal-card{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:28px;max-width:640px;width:90%;max-height:80vh;overflow:auto;position:relative;box-shadow:0 0 50px rgba(0,0,0,.65)}
+.modal-card h3{font-size:1.3rem;margin-bottom:8px}
+.modal-card .modal-tag{display:inline-block;margin-bottom:14px;font-size:.75rem;padding:4px 10px;border-radius:999px;background:rgba(0,212,255,.18);color:var(--accent);letter-spacing:1px}
+.modal-card p{font-size:.9rem;color:#cfd2e7;margin-bottom:16px}
+.modal-card .modal-links a{display:inline-block;margin-right:12px;margin-bottom:8px;color:var(--accent);font-size:.8rem;text-decoration:none}
+.modal-close{position:absolute;top:12px;right:18px;font-size:1.4rem;color:var(--dim);cursor:pointer}
 
 /* Conversations */
 .convo-item{border-bottom:1px solid rgba(255,255,255,.08);padding:10px 0}
@@ -61,7 +70,7 @@ section .body{padding:16px}
   <header>
     <div>
       <h1>JARVIS OPS</h1>
-      <div class="meta">Agentra AI Agency • Project + Conversation Monitor</div>
+      <div class="meta">Agentra AI Agency | Project + Conversation Monitor</div>
     </div>
     <div class="meta" id="timestamp"></div>
   </header>
@@ -70,7 +79,7 @@ section .body{padding:16px}
 
   <div class="grid">
     <section>
-      <h2>Kanban • Live Workstreams</h2>
+      <h2>Kanban | Live Workstreams</h2>
       <div class="body">
         <div class="kanban" id="kanban"></div>
       </div>
@@ -85,6 +94,16 @@ section .body{padding:16px}
     <h2>Deliverables & Links</h2>
     <div class="body" id="deliverables"></div>
   </section>
+</div>
+
+<div class="modal" id="task-modal">
+  <div class="modal-card">
+    <div class="modal-close" onclick="closeModal()">×</div>
+    <h3 id="modal-title"></h3>
+    <div class="modal-tag" id="modal-tag"></div>
+    <p id="modal-desc"></p>
+    <div class="modal-links" id="modal-links"></div>
+  </div>
 </div>
 
 <script>
@@ -144,7 +163,7 @@ stats.forEach(s=>{const card=document.createElement('div');card.className=`stat-
 // render kanban
 const lanes=[{name:'Backlog',items:kanban.backlog},{name:'In Progress',items:kanban.progress},{name:'Done',items:kanban.done}];
 const kanbanWrap=document.getElementById('kanban');
-lanes.forEach(l=>{const col=document.createElement('div');col.className='column';col.innerHTML=`<header><h3>${l.name}</h3><span>${l.items.length}</span></header>`;const cards=document.createElement('div');cards.className='cards';l.items.forEach(task=>{const card=document.createElement('div');card.className='task';const links=task.links?.map(h=>`<a href="${h}" target="_blank">link</a>`).join(' ');card.innerHTML=`<h4>${task.title}</h4><p>${task.desc}</p><div class="tag">${task.tag}</div>${links?`<div class="links">${links}</div>`:''}`;cards.appendChild(card);});col.appendChild(cards);kanbanWrap.appendChild(col);});
+lanes.forEach(l=>{const col=document.createElement('div');col.className='column';col.innerHTML=`<header><h3>${l.name}</h3><span>${l.items.length}</span></header>`;const cards=document.createElement('div');cards.className='cards';l.items.forEach((task,idx)=>{const card=document.createElement('div');card.className='task';card.dataset.column=l.name;card.dataset.index=idx;card.addEventListener('click',()=>openModal(l.name,idx));const links=task.links?.map(h=>`<a href="${h}" target="_blank">link</a>`).join(' ');card.innerHTML=`<h4>${task.title}</h4><p>${task.desc}</p><div class="tag">${task.tag}</div>${links?`<div class="links">${links}</div>`:''}`;cards.appendChild(card);});col.appendChild(cards);kanbanWrap.appendChild(col);});
 
 // conversations
 const convoWrap=document.getElementById('conversations');
@@ -153,6 +172,11 @@ conversations.forEach(c=>{const div=document.createElement('div');div.className=
 // deliverables
 const delWrap=document.getElementById('deliverables');
 deliverables.forEach(d=>{const div=document.createElement('div');div.className='deliverable';div.innerHTML=`<h4>${d.title}</h4><p>${d.desc}</p>${d.link?`<a href="${d.link}" target="_blank">${d.link}</a>`:''}`;delWrap.appendChild(div);});
+
+const columnMap={Backlog:kanban.backlog,'In Progress':kanban.progress,Done:kanban.done};
+function openModal(columnName,index){const tasks=columnMap[columnName];if(!tasks)return;const task=tasks[index];if(!task)return;document.getElementById('modal-title').textContent=task.title;document.getElementById('modal-tag').textContent=`${columnName.toUpperCase()} | ${task.tag}`;document.getElementById('modal-desc').textContent=task.desc;const linksDiv=document.getElementById('modal-links');linksDiv.innerHTML='';(task.links||[]).forEach(link=>{const a=document.createElement('a');a.href=link;a.target='_blank';try{a.textContent=link.startsWith('http')?new URL(link).hostname:link;}catch(e){a.textContent=link;}linksDiv.appendChild(a);});document.getElementById('task-modal').classList.add('open');}
+function closeModal(){document.getElementById('task-modal').classList.remove('open');}
+document.getElementById('task-modal').addEventListener('click',e=>{if(e.target.id==='task-modal'){closeModal();}});
 
 document.getElementById('timestamp').textContent='Updated '+new Date().toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
 </script>
