@@ -105,6 +105,7 @@ const kanban={
   progress:[
     {title:'Agentra showcase site',desc:'New hero, multi-cloud + RAG copy, AWS S3 staging bucket + public config endpoint.',tag:'Web',links:['projects/agentra-site/index.html','http://agentra-agency-site.s3-website-us-west-2.amazonaws.com']},
     {title:'Dashboard rewrite',desc:'Turn static HUD into Kanban + convo log so Chris can track everything in one glance.',tag:'Dashboard',links:['projects/dashboard/index.html']},
+    {title:'Multi-cloud agent showcase',desc:'Research AWS/Azure/GCP agent workflows + webapps to demo automation.',tag:'Showcase',links:['research/ai-agent-workflows.md']},
     {title:'Backups + AWS CLI',desc:'Workspace git snapshot, tarball, gateway config, AWS CLI v2 with new key.',tag:'Infra',links:['/home/csmith/backups/2026-02-12']}],
   done:[
     {title:'Lead briefs v3',desc:'Cincy, M&T, Broadridge, DLH, Scripps, Columbia, Western Alliance, ICW delivered with PDFs.',tag:'Leads'},
@@ -114,6 +115,7 @@ const kanban={
 };
 
 const conversations=[
+  {time:'19:17',title:'Multi-cloud agent mandate',body:'Chris asked for deep-dive AI agent workflows + webapps for AWS, Azure, GCP while he’s at the Pitt.'},
   {time:'19:13',title:'Dashboard becomes project source of truth',body:'Chris wants every chat, deliverable, and kanban state mirrored here. Bold directive to customize freely.'},
   {time:'19:05',title:'Agentra site staging on S3',body:'Multi-cloud badges, RAG copy, AWS/GCP logo saga resolved with inline SVG failover then CDN files.'},
   {time:'18:44',title:'Voice UI config automation',body:'Gateway endpoint exposed via Cloudflare, config JSON auto-loaded, iPad instructions documented.'},
@@ -124,6 +126,7 @@ const conversations=[
 const deliverables=[
   {title:'Agentra Showcase (staging)',desc:'AWS S3 website hosting with multi-cloud + RAG messaging.',link:'http://agentra-agency-site.s3-website-us-west-2.amazonaws.com'},
   {title:'Agentra Source',desc:'Single-file site in workspace for future edits.',link:'/home/csmith/.openclaw/workspace/projects/agentra-site/index.html'},
+  {title:'AI Agent Workflows Doc',desc:'Research blueprint for AWS/Azure/GCP agent webapps.',link:'/home/csmith/.openclaw/workspace/research/ai-agent-workflows.md'},
   {title:'Jarvis Voice UI',desc:'HUD interface tied to OpenClaw gateway.',link:'https://topdawg619.github.io/jarvis-voice/'},
   {title:'Dashboard repo',desc:'This Kanban board source.',link:'https://github.com/topdawg619/jarvis-dashboard'},
   {title:'Backups',desc:'/home/csmith/backups/2026-02-12/workspace.tar.gz + gateway-config.json',link:'/home/csmith/backups/2026-02-12'}
