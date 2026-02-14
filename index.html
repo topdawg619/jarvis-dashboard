@@ -110,9 +110,9 @@ section .body{padding:16px}
 const stats=[
   {label:'Active Projects',value:8,style:'neutral'},
   {label:'Lead Briefs',value:8,style:'good'},
-  {label:'Web Apps',value:4,style:'good'},
+  {label:'Web Apps',value:5,style:'good'},
   {label:'Cron Jobs',value:4,style:'warn'},
-  {label:'Docs Updated',value:19,style:'good'},
+  {label:'Docs Updated',value:20,style:'good'},
   {label:'GitHub Deploys Today',value:2,style:'neutral'}
 ];
 
@@ -125,10 +125,10 @@ const kanban={
     {title:'AWS FinOps Guard',desc:'Terraform wiring for EventBridge → Step Functions → Lambda → Dynamo + sample data + mock Bedrock summary.',tag:'Cloud Agents',links:['projects/cloud-agents/aws-finops-guard/README.md','projects/cloud-agents/aws-finops-guard/infrastructure/terraform/main.tf']},
     {title:'Lupus Awareness Lab CMS',desc:'Nightingale-inspired rebuild + GitHub Pages + Formspree bridge with mobile-first CSS.',tag:'Web',links:['https://topdawg619.github.io/lupus-awareness-site/','https://github.com/topdawg619/lupus-awareness-site']},
     {title:'Agentra showcase site',desc:'New hero, multi-cloud + RAG copy, AWS S3 staging bucket + public config endpoint.',tag:'Web',links:['projects/agentra-site/index.html','http://agentra-agency-site.s3-website-us-west-2.amazonaws.com']},
-    {title:'Dashboard rewrite',desc:'Turn static HUD into Kanban + convo log so Chris can track everything in one glance.',tag:'Dashboard',links:['projects/dashboard/index.html']},
-    {title:'Multi-cloud agent showcase',desc:'Research AWS/Azure/GCP agent workflows + webapps to demo automation.',tag:'Showcase',links:['research/ai-agent-workflows.md']},
+    {title:'Multi-cloud agent showcase',desc:'Live gallery + schema powering upcoming Azure + GCP builds.',tag:'Showcase',links:['research/ai-agent-workflows.md','projects/cloud-agents/multi-cloud-gallery/index.html']},
     {title:'Backups + AWS CLI',desc:'Workspace git snapshot, tarball, gateway config, AWS CLI v2 with new key.',tag:'Infra',links:['/home/csmith/backups/2026-02-12']}],
   done:[
+    {title:'Dashboard rewrite',desc:'Turn static HUD into Kanban + convo log so Chris can track everything in one glance.',tag:'Dashboard',links:['projects/dashboard/index.html']},
     {title:'Lead briefs v3',desc:'Cincy, M&T, Broadridge, DLH, Scripps, Columbia, Western Alliance, ICW delivered with PDFs.',tag:'Leads'},
     {title:'DAKboard BHM backgrounds',desc:'17 portrait designs (Feb 12-28) matched to user feedback.',tag:'Creative'},
     {title:'Hot Wheels toolkit',desc:'8-file reference pack (scale, printing, paint, lighting).',tag:'Docs'}
@@ -136,6 +136,7 @@ const kanban={
 };
 
 const conversations=[
+  {time:'23:28',title:'Multi-cloud gallery + schema',body:'Built landing page + workflows.json so we can showcase AWS/Azure/GCP agents and feed future docs.'},
   {time:'23:05',title:'AWS FinOps Guard stack',body:'Hooked EventBridge → Step Functions → mock Bedrock Lambda → DynamoDB plus sample data + cost anomaly event for demos.'},
   {time:'22:45',title:'Directive: return to AWS',body:'Chris pulled us back to the FinOps Guard build to keep the cloud agent work moving.'},
 
@@ -153,6 +154,7 @@ const conversations=[
 ];
 
 const deliverables=[
+  {title:'Multi-cloud Agent Gallery',desc:'Landing page + JSON schema for AWS/Azure/GCP AI agents.',link:'/home/csmith/.openclaw/workspace/projects/cloud-agents/multi-cloud-gallery/index.html'},
   {title:'AWS FinOps Guard IaC',desc:'Step Functions ASL, Terraform, mock Bedrock Lambda, and sample anomaly payloads for demos.',link:'/home/csmith/.openclaw/workspace/projects/cloud-agents/aws-finops-guard/'},
   {title:'Lupus Awareness Lab v2',desc:'Nightingale-style hero, reaction widget, newsletter CTA, and mobile-first layout for daily research drops.',link:'https://topdawg619.github.io/lupus-awareness-site/'},
   {title:'Lupus Awareness Lab Repo',desc:'Static CMS generator with mirrored docs/ for GitHub Pages.',link:'https://github.com/topdawg619/lupus-awareness-site'},
