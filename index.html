@@ -108,11 +108,11 @@ section .body{padding:16px}
 
 <script>
 const stats=[
-  {label:'Active Projects',value:7,style:'neutral'},
+  {label:'Active Projects',value:8,style:'neutral'},
   {label:'Lead Briefs',value:8,style:'good'},
   {label:'Web Apps',value:4,style:'good'},
   {label:'Cron Jobs',value:4,style:'warn'},
-  {label:'Docs Updated',value:18,style:'good'},
+  {label:'Docs Updated',value:19,style:'good'},
   {label:'GitHub Deploys Today',value:2,style:'neutral'}
 ];
 
@@ -122,6 +122,7 @@ const kanban={
     {title:'Voice UI transcription',desc:'webkitSpeechRecognition returning empty transcripts; needs debugging before SKO.',tag:'Voice UI',links:['projects/jarvis-voice/index.html']}
   ],
   progress:[
+    {title:'AWS FinOps Guard',desc:'Terraform wiring for EventBridge → Step Functions → Lambda → Dynamo + sample data + mock Bedrock summary.',tag:'Cloud Agents',links:['projects/cloud-agents/aws-finops-guard/README.md','projects/cloud-agents/aws-finops-guard/infrastructure/terraform/main.tf']},
     {title:'Lupus Awareness Lab CMS',desc:'Nightingale-inspired rebuild + GitHub Pages + Formspree bridge with mobile-first CSS.',tag:'Web',links:['https://topdawg619.github.io/lupus-awareness-site/','https://github.com/topdawg619/lupus-awareness-site']},
     {title:'Agentra showcase site',desc:'New hero, multi-cloud + RAG copy, AWS S3 staging bucket + public config endpoint.',tag:'Web',links:['projects/agentra-site/index.html','http://agentra-agency-site.s3-website-us-west-2.amazonaws.com']},
     {title:'Dashboard rewrite',desc:'Turn static HUD into Kanban + convo log so Chris can track everything in one glance.',tag:'Dashboard',links:['projects/dashboard/index.html']},
@@ -135,6 +136,9 @@ const kanban={
 };
 
 const conversations=[
+  {time:'23:05',title:'AWS FinOps Guard stack',body:'Hooked EventBridge → Step Functions → mock Bedrock Lambda → DynamoDB plus sample data + cost anomaly event for demos.'},
+  {time:'22:45',title:'Directive: return to AWS',body:'Chris pulled us back to the FinOps Guard build to keep the cloud agent work moving.'},
+
   {time:'22:37',title:'Lupus site Nightingale rebuild',body:'Recreated hero/article layout, reaction widget, newsletter CTA, and stats card UI; published to GitHub Pages.'},
   {time:'22:35',title:'Mobile-first directive',body:'Added tablet/phone breakpoints so nav, CTAs, reaction buttons, and cards are thumb-friendly.'},
   {time:'22:33',title:'Dashboard accountability reminder',body:'Chris reiterated every chat + deliverable must be logged here without prompting.'},
@@ -149,6 +153,7 @@ const conversations=[
 ];
 
 const deliverables=[
+  {title:'AWS FinOps Guard IaC',desc:'Step Functions ASL, Terraform, mock Bedrock Lambda, and sample anomaly payloads for demos.',link:'/home/csmith/.openclaw/workspace/projects/cloud-agents/aws-finops-guard/'},
   {title:'Lupus Awareness Lab v2',desc:'Nightingale-style hero, reaction widget, newsletter CTA, and mobile-first layout for daily research drops.',link:'https://topdawg619.github.io/lupus-awareness-site/'},
   {title:'Lupus Awareness Lab Repo',desc:'Static CMS generator with mirrored docs/ for GitHub Pages.',link:'https://github.com/topdawg619/lupus-awareness-site'},
   {title:'Agentra Showcase (staging)',desc:'AWS S3 website hosting with multi-cloud + RAG messaging.',link:'http://agentra-agency-site.s3-website-us-west-2.amazonaws.com'},
