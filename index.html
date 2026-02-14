@@ -118,16 +118,16 @@ const stats=[
 
 const kanban={
   backlog:[
+    {title:'Multi-cloud agent showcase',desc:'Live gallery + schema powering upcoming Azure + GCP builds.',tag:'Showcase',links:['research/ai-agent-workflows.md','projects/cloud-agents/multi-cloud-gallery/index.html']},
+    {title:'Agentra showcase site',desc:'New hero, multi-cloud + RAG copy, AWS S3 staging bucket + public config endpoint.',tag:'Web',links:['projects/agentra-site/index.html','http://agentra-agency-site.s3-website-us-west-2.amazonaws.com']},
+    {title:'Lupus Awareness Lab CMS',desc:'Nightingale-inspired rebuild + GitHub Pages + Formspree bridge with mobile-first CSS.',tag:'Web',links:['https://topdawg619.github.io/lupus-awareness-site/','https://github.com/topdawg619/lupus-awareness-site']},
+    {title:'AWS FinOps Guard',desc:'Terraform wiring for EventBridge → Step Functions → Lambda → Dynamo + sample data + mock Bedrock summary.',tag:'Cloud Agents',links:['projects/cloud-agents/aws-finops-guard/README.md','projects/cloud-agents/aws-finops-guard/infrastructure/terraform/main.tf']},
     {title:'Jobs + SAM.gov collectors',desc:'Fix jobs collector extraction, add SAM.gov source with same enrichment path.',tag:'Infra',links:[]},
     {title:'Voice UI transcription',desc:'webkitSpeechRecognition returning empty transcripts; needs debugging before SKO.',tag:'Voice UI',links:['projects/jarvis-voice/index.html']}
   ],
   progress:[
-    {title:'AWS FinOps Guard',desc:'Terraform wiring for EventBridge → Step Functions → Lambda → Dynamo + sample data + mock Bedrock summary.',tag:'Cloud Agents',links:['projects/cloud-agents/aws-finops-guard/README.md','projects/cloud-agents/aws-finops-guard/infrastructure/terraform/main.tf']},
-    {title:'Lupus Awareness Lab CMS',desc:'Nightingale-inspired rebuild + GitHub Pages + Formspree bridge with mobile-first CSS.',tag:'Web',links:['https://topdawg619.github.io/lupus-awareness-site/','https://github.com/topdawg619/lupus-awareness-site']},
-    {title:'Multi-cloud agent showcase',desc:'Live gallery + schema powering upcoming Azure + GCP builds.',tag:'Showcase',links:['research/ai-agent-workflows.md','projects/cloud-agents/multi-cloud-gallery/index.html']},
     {title:'Backups + AWS CLI',desc:'Workspace git snapshot, tarball, gateway config, AWS CLI v2 with new key.',tag:'Infra',links:['/home/csmith/backups/2026-02-12']}],
   done:[
-    {title:'Agentra showcase site',desc:'New hero, multi-cloud + RAG copy, AWS S3 staging bucket + public config endpoint.',tag:'Web',links:['projects/agentra-site/index.html','http://agentra-agency-site.s3-website-us-west-2.amazonaws.com']},
     {title:'Dashboard rewrite',desc:'Turn static HUD into Kanban + convo log so Chris can track everything in one glance.',tag:'Dashboard',links:['projects/dashboard/index.html']},
     {title:'Lead briefs v3',desc:'Cincy, M&T, Broadridge, DLH, Scripps, Columbia, Western Alliance, ICW delivered with PDFs.',tag:'Leads'},
     {title:'DAKboard BHM backgrounds',desc:'17 portrait designs (Feb 12-28) matched to user feedback.',tag:'Creative'},
@@ -136,6 +136,7 @@ const kanban={
 };
 
 const conversations=[
+  {time:'23:55',title:'Paused for SKO readiness',body:'Moved active cloud/web workstreams back to backlog since they won’t finish before SKO.'},
   {time:'23:46',title:'Agentra site marked done',body:'Moved the Agentra showcase card into Done per Chris’s request.'},
   {time:'23:40',title:'Dashboard card state request',body:'Chris asked to mark Dashboard rewrite as done and reminded me to log conversations for every change.'},
   {time:'23:28',title:'Multi-cloud gallery + schema',body:'Built landing page + workflows.json so we can showcase AWS/Azure/GCP agents and feed future docs.'},
